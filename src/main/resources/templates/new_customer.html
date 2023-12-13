@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://org.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+<form th:action="@{/customers/save}"
+      th:object="${customer}" method="post"
+      enctype="multipart/form-data"
+>
+    <div>
+        <label>Email: </label>
+        <input type="email" name="email" th:field="*{email}"/>
+    </div>
+    <div>
+        <label>Photos: </label>
+        <input type="file" name="image" id="image" accept="image/png, image/jpeg" />
+        <img th:src="@{${customer.photosImagePath}}" alt="Photo Preview" id="thumbnail" style="width: 100px"/>
+    </div>
+    <div>
+        <button type="submit">Save</button>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#image').change(function () {
+                showImageThumbnail(this);
+            });
+        });
+
+        function showImageThumbnail(fileInput) {
+            let file = fileInput.files[0];
+            let reader = new FileReader();
+            reader.onload = function (e) {
+                $('#thumbnail').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(file);
+        }
+    </script>
+</form>
+</body>
+</html>
